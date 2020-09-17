@@ -3,6 +3,7 @@
 #include <string>
 #include <unistd.h>
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -56,39 +57,52 @@ void newExpense(){
         cout << "The categories that you have made are: " << endl;
         for (string x : cats)
             cout << x << endl;
+        usleep(1000000);
+        cout << "Please choose a category" << endl;
         string userExpense;
         cin >> userExpense; // you need to make sure that this is a real category
-        cout << "Sweet! we'll be adding an expense to the " << userExpense << " category!";
-        usleep(1000000);
-        cout << "What is this expense going to be called?" << endl;
-        usleep(1000000);
-        string expenseName;
-        cin >> expenseName;
-        cout << "Gnar, now how much did " << expenseName << " cost?" << endl;
-        int expenseCost;
-        cout << "$";
-        cin >> expenseCost;
-        cout << "So well be adding " << expenseName << ", which cost $" << expenseCost << " to the " << userExpense
-             << " category, does that look right? (y/n)";
-        string yON;
-        cin >> yON; // you need to add if the user finds something that is wrong.
-        // if(yON == "n") // this is shit for validating that other stuff
-        // this is pushing the info to the expense file
-        ofstream  myFile ("expenses.txt");
-        if(myFile.is_open()){
-            myFile << userExpense << " " << expenseName << " " << expenseCost << "\n";
+        bool inCats = false;
+        for (string x : cats) {
+            if (x == userExpense){
+                inCats = true;
+            }
         }
-        else cout << "Unable to write to expenses.txt" << endl;
+        if(!inCats) {
+            cout << "Sorry that category isn't in your categories list, try again!" << endl;
+            usleep(1000000);
+        }
+        else {
+            cout << "Sweet! we'll be adding an expense to the " << userExpense << " category!" << endl;
+            usleep(1000000);
+            cout << "What is this expense going to be called?" << endl;
+            usleep(1000000);
+            string expenseName;
+            cin >> expenseName;
+            cout << "Gnar, now how much did " << expenseName << " cost?" << endl;
+            int expenseCost;
+            cout << "$";
+            cin >> expenseCost;
+            cout << "So well be adding " << expenseName << ", which cost $" << expenseCost << " to the " << userExpense
+                 << " category, does that look right? (y/n)";
+            string yON;
+            cin >> yON; // you need to add if the user finds something that is wrong.
+            // if(yON == "n") // this is shit for validating that other stuff
+            // this is pushing the info to the expense file
+            ofstream myFile("expenses.txt");
+            if (myFile.is_open()) {
+                myFile << userExpense << " " << expenseName << " " << expenseCost << "\n";
+            } else cout << "Unable to write to expenses.txt" << endl;
 
 
-        cout << "Do you want to add another expense? (y/n)" << endl;
-        string anotherExpense;
-        cin >> anotherExpense;
-        if(anotherExpense == "n") again = false;
-        else cout << "Awesome! lets do another!" << endl << usleep(500000);
+            cout << "Do you want to add another expense? (y/n)" << endl;
+            string anotherExpense;
+            cin >> anotherExpense;
+            if (anotherExpense == "n") again = false;
+            else cout << "Awesome! lets do another!" << endl << usleep(500000);
+        }
     }
 
-    cout << "Swe"
+    cout << "Sweet.  You're all done adding expenses for now, remember you can always go back to this from the main menu." << endl;
 
 
 
